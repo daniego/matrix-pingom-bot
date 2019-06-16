@@ -5,3 +5,4 @@ install:
   - pip install -r requirements.txt
 script:
   - pip install pylint
+  - pylint matrix_pingdom_bot

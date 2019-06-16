@@ -4,6 +4,7 @@ Text
 import json
 from matrix_client.api import MatrixHttpApi, MatrixRequestError
 from flask import Flask, request
+from flask.logging import create_logger
 import settings
 
 try:
@@ -11,8 +12,10 @@ try:
 except ImportError:
     pass
 
-app = Flask(__name__)
-app.logger.setLevel(settings.LOG_LEVEL)
+app = Flask(__name__) # pylint: disable=invalid-name
+LOG = create_logger(app)
+LOG.setLevel(settings.LOG_LEVEL)
+# app.logger.setLevel(settings.LOG_LEVEL)
 
 @app.route("/", methods=['POST'])
 def main_route():
@@ -58,10 +61,10 @@ def main_route():
                 }
             )
         except MatrixRequestError as ex:
-            app.logger.error('send_message_event failure', ex)
+            LOG.error('send_message_event failure %s', ex)
             return json.dumps({'success':False}), 417, {'ContentType':'application/json'}
 
-        app.logger.debug('Matrix Response: %s', response)
+        LOG.debug('Matrix Response: %s', response)
         return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
     return json.dumps({'success':False}), 405, {'ContentType':'application/json'}
