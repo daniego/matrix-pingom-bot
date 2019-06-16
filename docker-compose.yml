@@ -1,0 +1,15 @@
+version: '3'
+services:
+  web:
+    build: .
+    image: daniego/matrix_pingdom_bot:latest
+    ports:
+      - "80:80"
+    env_file:
+      - .env
+    environment:
+      - MATRIX_SERVER
+      - MATRIX_TOKEN
+      - MATRIX_ROOM
+      - LOG_LEVEL
+      - debug_enabled

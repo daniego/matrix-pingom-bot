@@ -15,7 +15,8 @@ except ImportError:
 app = Flask(__name__) # pylint: disable=invalid-name
 LOG = create_logger(app)
 LOG.setLevel(settings.LOG_LEVEL)
-# app.logger.setLevel(settings.LOG_LEVEL)
+
+LOG.info('Matrix server: %s', settings.MATRIX_SERVER)
 
 @app.route("/", methods=['POST'])
 def main_route():
