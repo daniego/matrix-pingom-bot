@@ -4,7 +4,7 @@ services:
     build: .
     image: daniego/matrix_pingdom_bot:latest
     ports:
-      - "80:80"
+      - "8089:80"
     env_file:
       - .env
     environment:
