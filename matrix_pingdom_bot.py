@@ -4,7 +4,7 @@ Text
 import json
 import ast
 from matrix_client.api import MatrixHttpApi, MatrixRequestError
-from flask import Flask, request
+from flask import Flask, render_template, request
 from flask.logging import create_logger
 import settings
 
@@ -70,23 +70,31 @@ def prepare_message(matrix_room):
     current_state = pingdom_payload['current_state']
     previous_state = pingdom_payload['previous_state']
 
-    if current_state == 'DOWN' and previous_state == 'UP':
+    state_failed = ['DOWN', 'FAILING']
+    state_success = ['UP', 'SUCCESS']
+
+    if (current_state in state_failed and previous_state in state_success):
         pingdom_payload.update({"state": "DOWN", "color": "#ff0000"})
-    elif current_state == 'UP' and previous_state == 'DOWN':
+    elif (current_state in state_success and previous_state in state_failed):
         pingdom_payload.update({"state": "UP", "color": "#33cc33"})
     else:
+        LOG.info('Got notification but nothing changed')
         return json.dumps({'success': True, 'message': 'nothing changed'}), 200, {'ContentType':'application/json'} # pylint: disable=line-too-long
 
     message_plain = "[{check_name}] {description}".format(**pingdom_payload)
-    message = """<p>
-                    <strong>
-                        <font color="{color}">[{check_name}] {description}</font>
-                    </strong>
-                </p>
-                <blockquote>
-                    <p>{long_description}</p>
-                    <p><em>{state_changed_utc_time}</em></p>
-                </blockquote>""".format(**pingdom_payload)
+    # message = """<p>
+    #                 <strong>
+    #                     <font color="{color}">[{check_name}] {description}</font>
+    #                 </strong>
+    #             </p>
+    #             <blockquote>
+    #                 <p>{long_description}</p>
+    #                 <p><em>{state_changed_utc_time}</em></p>
+    #             </blockquote>""".format(**pingdom_payload)
+
+    message = render_template('message.html.j2', pingdom_payload=pingdom_payload)
+
+
 
     return send_message(matrix_room, message_plain, message)
 
