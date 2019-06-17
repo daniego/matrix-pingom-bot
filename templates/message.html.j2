@@ -1,0 +1,11 @@
+<p>
+    <strong>
+        <font color="{{ pingdom_payload['color'] }}">{{ pingdom_payload['check_name'] }} - {{ pingdom_payload['description'] }}</font>
+    </strong>
+</p>
+<blockquote>
+{% if pingdom_payload['long_description'] %}
+    <p>{{ pingdom_payload['long_description'] }}</p>
+{% endif %}
+    <p><em>{{ pingdom_payload['current_state'] }} @ {{ pingdom_payload['state_changed_utc_time'] }}</em></p>
+</blockquote>
