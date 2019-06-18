@@ -1,5 +1,5 @@
-# matrix-pingdom-bot
 [![Build Status](https://travis-ci.org/daniego/matrix_pingdom_bot.svg?branch=master)](https://travis-ci.org/daniego/matrix_pingdom_bot)
+# matrix-pingdom-bot
 This is a bot that receives messages from pingdom and sends it to matrix
 
 # Settings
