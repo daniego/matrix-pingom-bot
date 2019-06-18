@@ -19,6 +19,7 @@ LOG = create_logger(app)
 LOG.setLevel(settings.LOG_LEVEL)
 
 LOG.info('Matrix server: %s', settings.MATRIX_SERVER)
+LOG.info('Matrix rooms: %s', settings.MATRIX_ROOMS)
 
 def check_token(token):
     '''
@@ -57,10 +58,10 @@ def send_message(matrix_room, message_plain, message):
         )
     except MatrixRequestError as ex:
         LOG.error('send_message_event failure %s', ex)
-        return json.dumps({'success':False}), 417, {'ContentType':'application/json'}
+        return json.dumps({'success': False}), 417, {'ContentType':'application/json'}
 
     LOG.debug('Matrix Response: %s', response)
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+    return json.dumps({'success': True}), 200, {'ContentType':'application/json'}
 
 def prepare_message(matrix_room):
     '''
@@ -82,19 +83,7 @@ def prepare_message(matrix_room):
         return json.dumps({'success': True, 'message': 'nothing changed'}), 200, {'ContentType':'application/json'} # pylint: disable=line-too-long
 
     message_plain = "[{check_name}] {description}".format(**pingdom_payload)
-    # message = """<p>
-    #                 <strong>
-    #                     <font color="{color}">[{check_name}] {description}</font>
-    #                 </strong>
-    #             </p>
-    #             <blockquote>
-    #                 <p>{long_description}</p>
-    #                 <p><em>{state_changed_utc_time}</em></p>
-    #             </blockquote>""".format(**pingdom_payload)
-
     message = render_template('message.html.j2', pingdom_payload=pingdom_payload)
-
-
 
     return send_message(matrix_room, message_plain, message)
 
@@ -123,9 +112,9 @@ def main_route():
         is_valid_token = check_token(token)
 
         if not is_valid_token:
-            return json.dumps({'success':False, 'reason': 'token not valid'}), 403, {'ContentType':'application/json'} # pylint: disable=line-too-long
+            return json.dumps({'success': False, 'reason': 'token not valid'}), 403, {'ContentType':'application/json'} # pylint: disable=line-too-long
     else:
-        return json.dumps({'success':False, 'reason': 'token not provided'}), 403, {'ContentType':'application/json'} # pylint: disable=line-too-long
+        return json.dumps({'success': False, 'reason': 'token not provided'}), 403, {'ContentType':'application/json'} # pylint: disable=line-too-long
 
 
     # Validating room
@@ -135,9 +124,9 @@ def main_route():
         matrix_room = check_room(room)
 
         if not matrix_room:
-            return json.dumps({'success':False, 'reason': 'room not valid'}), 403, {'ContentType':'application/json'} # pylint: disable=line-too-long
+            return json.dumps({'success': False, 'reason': 'room not valid'}), 403, {'ContentType':'application/json'} # pylint: disable=line-too-long
     else:
-        return json.dumps({'success':False, 'reason': 'room not provided'}), 403, {'ContentType':'application/json'} # pylint: disable=line-too-long
+        return json.dumps({'success': False, 'reason': 'room not provided'}), 403, {'ContentType':'application/json'} # pylint: disable=line-too-long
 
 
 

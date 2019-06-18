@@ -31,7 +31,7 @@ server {
   ...
 
   location /pingdom {
-    proxy_pass        http://127.0.0.1:8099;
+    proxy_pass        http://127.0.0.1:8089;
     proxy_redirect    off;
     proxy_set_header  X-Real-IP        $remote_addr;
     proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
@@ -48,9 +48,12 @@ Docker environment
 ------------------
 Create the .env file based on .env_sample and run the composer
 ```
-git clone git@github.com:daniego/matrix_pingom_bot.git
+git clone https://github.com/daniego/matrix_pingom_bot.git
 cd matrix_pingom_bot
-docker-compose up -d
+cp .env_sample .env
+vi .env
+# and customize your settings
+docker-compose pull && docker-compose up -d
 ```
 From source
 -----------

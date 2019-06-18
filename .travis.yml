@@ -14,11 +14,12 @@ install:
 script:
   - pip install pylint
   - pylint matrix_pingdom_bot
-  # Push container
+  # Push branch/tag container
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push daniego/matrix_pingdom_bot:$TRAVIS_BRANCH
-deploy:
-  provider: script
-  script:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker push daniego/matrix_pingdom_bot:$TRAVIS_BRANCH
+  - if [[ "${TRAVIS_BRANCH}" == "master" ]]; then docker tag daniego/matrix_pingdom_bot:$TRAVIS_BRANCH daniego/matrix_pingdom_bot:latest; docker push daniego/matrix_pingdom_bot:latest; fi
+# deploy:
+#   provider: script
+#   script:
+#     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+#     - docker push daniego/matrix_pingdom_bot:$TRAVIS_BRANCH

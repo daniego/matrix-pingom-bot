@@ -13,3 +13,4 @@ services:
       - MATRIX_ROOM
       - LOG_LEVEL
       - debug_enabled
+    restart: always
