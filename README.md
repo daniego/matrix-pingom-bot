@@ -1,5 +1,5 @@
-# matrix-pingom-bot
-
+# matrix-pingdom-bot
+[![Build Status](https://travis-ci.org/daniego/matrix_pingdom_bot.svg?branch=master)](https://travis-ci.org/daniego/matrix_pingdom_bot)
 This is a bot that receives messages from pingdom and sends it to matrix
 
 # Settings
@@ -20,7 +20,7 @@ debug_enabled=True
 # Pingdom setup
 Set the webhook to your instance
 
-Example: `https://matrix.example.org/pingom?token=thisISaSAMPLEtoken&room=test_room`
+Example: `https://matrix.example.org/pingdom?token=thisISaSAMPLEtoken&room=test_room`
 
 # Home server integration via nginx
 Add your nginx or whatever is your termination an ACL that forwards the request to the bot
